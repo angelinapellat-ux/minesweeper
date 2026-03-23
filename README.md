@@ -1,1 +1,3 @@
 # minesweeper
+
+A game that promises to blow everything up...
