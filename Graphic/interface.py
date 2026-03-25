@@ -17,7 +17,7 @@ class MinesweeperUI:
 
         # Images pour les chiffres
         self.num_images = {
-            i: PhotoImage(file=f"assets/num_{i}.png") for i in range(9)
+            i: PhotoImage(file=f"assets/Images/num_{i}.png") for i in range(9)
         }
 
         self.create_board()
