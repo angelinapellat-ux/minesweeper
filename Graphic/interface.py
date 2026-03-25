@@ -1,1 +1,2 @@
-from tkinter import tk
+import tkinter as tk
+from tkinter import PhotoImage
