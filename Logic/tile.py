@@ -1,5 +1,3 @@
-
-
 class Tile:
     def __init__(self, coordinate, status="Hidden", ismine=False, nbmines=0):
         self.coordinate = coordinate
