@@ -7,6 +7,9 @@ class Tile:
         self.__ismine = ismine
         self.nbmines = nbmines
 
+    def get_coordinate(self):
+        return self.coordinate
+
     def get_longitude(self):
         return self.coordinate[0]
     
@@ -29,12 +32,14 @@ class Tile:
             coordinate = grid_size - 1
         return coordinate
     
-    def select_around(self, grid, selected_tiles = []):
-        for longitude in range(self.safety_limit(grid[self.get_longitude()-1]), 
-                               self.safety_limit(grid[self.get_longitude()+1])):
-            for latitude in range(self.safety_limit(grid[longitude][self.get_latitude()-1]), 
-                                  self.safety_limit(grid[longitude][self.get_latitude()+1])):
-                selected_tiles += [grid[longitude][latitude]]
+    def select_around(self, grid, center, selected_tiles = []):
+        grid_size = len(grid)
+        for longitude in range(self.safety_limit(grid[self.get_longitude()-1], grid_size), 
+                               self.safety_limit(grid[self.get_longitude()+1], grid_size)):
+            for latitude in range(self.safety_limit(grid[longitude][self.get_latitude()-1], grid_size), 
+                                  self.safety_limit(grid[longitude][self.get_latitude()+1], grid_size)):
+                if center == True or not grid[longitude][latitude] == self:
+                    selected_tiles += [grid[longitude][latitude]]
         selected_tiles -= selected_tiles[4]
         return selected_tiles
 
@@ -52,9 +57,9 @@ class Tile:
         else:
             self.status = "Visible"
 
-    def set_mine(self,  grid):
+    def set_mine(self, grid):
         self.ismine = True
-        tiles_around = self.select_around(grid)
+        tiles_around = self.select_around(grid, False)
         for selected_tile in tiles_around:
             selected_tile.add_mine()
 
@@ -67,7 +72,7 @@ class Tile:
             return "Lose"
         elif self.get_nbmines() == 0:
             self.reveal_tile(False)
-            tiles_around = self.select_around(grid)
+            tiles_around = self.select_around(grid, False)
             for selected_tiles in tiles_around:
                 if selected_tiles.get_status() == "Hidden":
                     selected_tiles.discover_tile(grid)
