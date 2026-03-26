@@ -31,7 +31,7 @@ def check_victory(grid):
 
 def grid_display(grid):
     for longitude in grid:
-        print(grid_line)
+        print("grid_line")
 
 def input_coordinate():
     longitude = int(input("Longitude: "))
