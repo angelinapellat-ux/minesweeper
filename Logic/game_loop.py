@@ -13,9 +13,9 @@ def grid_setup(grid_size):
 
 def spawn_mine(grid, first_selection):
     grid_size = len(grid)
-    longitude = random.randint(0, grid_size)
-    latitude = random.randint(0, grid_size)
-    test_mine = grid[longitude][latitude]
+    longitude = random.choice(grid)
+    latitude = random.choice(longitude)
+    test_mine = latitude
     if test_mine.get_ismine() == True or test_mine in grid[first_selection[0]][first_selection[1]].select_around(grid, True):
         spawn_mine(grid, first_selection)
     else:
@@ -23,38 +23,65 @@ def spawn_mine(grid, first_selection):
 
 def check_victory(grid):
     for longitude in grid:
-        for latitude in grid[longitude]:
-            if grid[longitude][latitude].get_ismine() == False and not grid[longitude][latitude].get_status() == "Visible":
+        for latitude in longitude:
+            if latitude.get_ismine() == False and not latitude.get_status() == "Visible":
                 return False
     return True
 
 
 def grid_display(grid):
     for longitude in grid:
+        grid_line = []
+        for latitude in longitude:
+            current_tile = latitude
+            if current_tile.get_status() == "Kaboom":
+                grid_line += ["X"]
+            elif current_tile.get_status() == "Hidden":
+                grid_line += [" "]
+            elif current_tile.get_status() == "Flag":
+                grid_line += ["F"]
+            elif current_tile.get_status() == "Mystery":
+                grid_line += ["?"]
+            elif current_tile.get_ismine() == True:
+                grid_line += ["x"]
+            else:
+                grid_line += [current_tile.get_nbmines()]
         print(grid_line)
 
 def input_coordinate():
     longitude = int(input("Longitude: "))
     latitude = int(input("Latitude: "))
-    return (longitude, latitude)
+    return (longitude-1, latitude-1)
+
+def input_action():
+    action = input("Découvrir (D) ; Changer l'état (E)")
+    return action
 
 
-def game_loop():
+def game():
     difficulty = input("Difficulty: ")
-    grid = grid_setup(3)
-    nbmines = 2
+    grid = grid_setup(5)
+    nbmines = 4
+    grid_display(grid)
     first_selection = input_coordinate()
     for loop in range(nbmines):
         spawn_mine(grid, first_selection)
+    grid[first_selection[0]][first_selection[1]].discover_tile(grid)
+    grid_display(grid)
     while True:
         result = "Continue"
         selection = input_coordinate()
-        result = grid[selection[0]][selection[1]].discover_tile()
-        if result == "Perdu":
-            print("Perdu")
-        elif check_victory(grid) == True:
-            print("Gagnée")
+        action = input_action()
+        if action == "D":
+            result = grid[selection[0]][selection[1]].discover_tile(grid)
+            if result == "Flag":
+                print("Un drapeau ne peut pas être découvert, veuillez enlever le drapeau")
+            elif result == "Perdu":
+                print("Perdu")
+            elif check_victory(grid) == True:
+                print("Gagnée")
+        elif action == "E":
+            grid[selection[0]][selection[1]].set_status()
+        grid_display(grid)
 
-
-grid = grid_setup(3)
-grid_display(grid)
+game()

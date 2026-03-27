@@ -30,17 +30,19 @@ class Tile:
             coordinate = 0
         elif coordinate >= grid_size:
             coordinate = grid_size - 1
+        print(coordinate)
         return coordinate
     
     def select_around(self, grid, center, selected_tiles = []):
         grid_size = len(grid)
-        for longitude in range(self.safety_limit(grid[self.get_longitude()-1], grid_size), 
-                               self.safety_limit(grid[self.get_longitude()+1], grid_size)):
-            for latitude in range(self.safety_limit(grid[longitude][self.get_latitude()-1], grid_size), 
-                                  self.safety_limit(grid[longitude][self.get_latitude()+1], grid_size)):
+        for longitude in range(self.safety_limit(self.get_longitude()-1, grid_size), 
+                               self.safety_limit(self.get_longitude()+2, grid_size)):
+            for latitude in range(self.safety_limit(self.get_latitude()-1, grid_size), 
+                                  self.safety_limit(self.get_latitude()+2, grid_size)):
                 if center == True or not grid[longitude][latitude] == self:
                     selected_tiles += [grid[longitude][latitude]]
-        selected_tiles -= selected_tiles[4]
+                    for i in selected_tiles:
+                        print(i.get_coordinate())
         return selected_tiles
 
     def set_status(self):
@@ -67,7 +69,9 @@ class Tile:
         self.nbmines += 1
         
     def discover_tile(self, grid):
-        if self.get_ismine() == True:
+        if self.get_status() == "Flag":
+            return "Flag"
+        elif self.get_ismine() == True:
             self.reveal_tile(True)
             return "Lose"
         elif self.get_nbmines() == 0:
