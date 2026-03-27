@@ -31,22 +31,7 @@ def check_victory(grid):
 
 def grid_display(grid):
     for longitude in grid:
-        grid_line = []
-        for latitude in longitude:
-            current_tile = latitude
-            if current_tile.get_status() == "Kaboom":
-                grid_line += ["X"]
-            elif current_tile.get_status() == "Hidden":
-                grid_line += [" "]
-            elif current_tile.get_status() == "Flag":
-                grid_line += ["F"]
-            elif current_tile.get_status() == "Mystery":
-                grid_line += ["?"]
-            elif current_tile.get_ismine() == True:
-                grid_line += ["x"]
-            else:
-                grid_line += [current_tile.get_nbmines()]
-        print(grid_line)
+        print("grid_line")
 
 def input_coordinate():
     longitude = int(input("Longitude: "))
