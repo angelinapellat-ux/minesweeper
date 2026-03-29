@@ -1,6 +1,14 @@
 import random
+import json
+import os
 from Logic.tile import Tile
 
+# Charge difficulty.json
+def load_difficulty():
+    base_path = os.path.dirname(__file__)  # dossier du script
+    file_path = os.path.join(base_path, "difficulty.json")
+    with open(file_path, "r", encoding="utf-8") as file:
+        return json.load(file)
 
 # Crée la grille sous forme d'instances de clase dans des listes dans des listes
 def grid_setup(grid_size):
@@ -73,10 +81,16 @@ def input_action():
 
 # Jeu
 def game():
-    # Difficulté pas encore implémenté
-    difficulty = input("Difficulty: ")
-    grid = grid_setup(10)
-    nbmines = 6
+    difficulty_settings = load_difficulty()
+    difficulty = input("Difficulty (EASY/MEDIUM/HARD/IMPOSSIBLE): ").upper()
+    if difficulty not in difficulty_settings:
+        print("Difficulté invalide")
+        return
+    settings = difficulty_settings[difficulty]
+    grid_size = settings["GRID_SIZE"]
+    nbmines = random.choice(settings["NBMINES"])
+    timer = settings["TIMER"]
+    grid = grid_setup(grid_size)
     grid_display(grid)
     first_selection = input_coordinate()
     # Pose le nombre de mines définie pour la partie

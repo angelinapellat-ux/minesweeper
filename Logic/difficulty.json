@@ -1,0 +1,22 @@
+{
+    "EASY": {
+        "GRID_SIZE" : 10,
+        "NBMINES" : [10, 15],
+        "TIMER" : 120
+    },
+    "MEDIUM": {
+        "GRID_SIZE" : 20,
+        "NBMINES" : [50, 75],
+        "TIMER" : 240
+    },
+    "HARD": {
+        "GRID_SIZE" : 30,
+        "NBMINES" : [200, 300],
+        "TIMER" : 360
+    },
+    "IMPOSSIBLE": {
+        "GRID_SIZE" : 50,
+        "NBMINES" : [1000, 1250],
+        "TIMER" : 40
+    }
+}
