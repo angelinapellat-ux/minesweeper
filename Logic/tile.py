@@ -33,7 +33,7 @@ class Tile:
         list_coordinates += [coordinate]
         if not coordinate + 1 >= grid_size:
             list_coordinates += [coordinate + 1]
-        print(list_coordinates)
+        #print(list_coordinates)
         return list_coordinates
 
 # Sélectionne les cases autour de l'instance utilisée pour d'autres modules
@@ -47,7 +47,7 @@ class Tile:
                 # Récupère toutes les instances de case dans la zone sauf elle-même
                 if not grid[longitude][latitude] == self:
                     selected_tiles.append(grid[longitude][latitude])
-                    print(grid[longitude][latitude].get_coordinate())
+                    #print(grid[longitude][latitude].get_coordinate())
         return selected_tiles
 
 # Changer l'état des cases cachées entre "Caché", "Drapeau" et "Mystère"
@@ -59,9 +59,7 @@ class Tile:
             self.status = "Mystery"
         elif self.get_status() == "Mystery":
             self.status = "Hidden"
-        else:
-            print("Cette case est déjà découverte")
-        print(f"Nouvel état : {self.get_status()}")
+        
 
 # Affiche le contenu de la case
     def reveal_tile(self, lose):
@@ -73,7 +71,7 @@ class Tile:
 # Pose une mine
     def set_mine(self, grid):
         self.__ismine = True
-        print(f"{self.get_coordinate()} est maintenant une mine")
+        #print(f"{self.get_coordinate()} est maintenant une mine")
         # Sélectionne les case autour pour augmenter leur compteur de mines
         tiles_around = self.select_around(grid)
         for selected_tile in tiles_around:

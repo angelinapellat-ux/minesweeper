@@ -104,4 +104,5 @@ def game():
         elif action == "E":
             grid[selection[0]][selection[1]].set_status()
 
-game()
+if __name__ == "__main__":
+    game()
