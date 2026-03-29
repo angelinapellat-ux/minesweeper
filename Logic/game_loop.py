@@ -1,5 +1,5 @@
 import random
-from tile import Tile
+from Logic.tile import Tile
 
 
 # Crée la grille sous forme d'instances de clase dans des listes dans des listes
