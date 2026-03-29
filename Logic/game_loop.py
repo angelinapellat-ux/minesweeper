@@ -1,7 +1,7 @@
 import random
 import json
 import os
-from tile import Tile
+from Logic.tile import Tile
 
 # Charge difficulty.json
 def load_difficulty():
