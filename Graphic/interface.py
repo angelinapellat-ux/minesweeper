@@ -10,12 +10,7 @@ class MinesweeperUI:
         self.buttons = {}
         self.first_click = True
 
-        # Empêche la fenêtre de s'étirer
-        self.root.resizable(False, False)
-
-        # Empêche Tkinter d'ajouter des marges autour du contenu
-        self.root.grid_propagate(False)
-        self.root.pack_propagate(False)
+      
 
         # Images principales
         self.images = {
