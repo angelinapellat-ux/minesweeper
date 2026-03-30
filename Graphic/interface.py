@@ -26,7 +26,7 @@ class MinesweeperUI:
             "Visible": PhotoImage(file="Assets/Images/revealed.png"),
         }
 
-        # Images des chiffres 0 à 7
+        # Images des chiffres 
         self.num_images = {
             i: PhotoImage(file=f"Assets/Images/num_{i}.png") for i in range(8)
         }
@@ -37,7 +37,7 @@ class MinesweeperUI:
     def create_board(self):
         size = len(self.grid)
 
-        # Configure chaque ligne/colonne pour éviter l'étirement
+        # Configure ligne/colonne
         for i in range(size):
             self.root.grid_columnconfigure(i, weight=0)
             self.root.grid_rowconfigure(i, weight=0)
@@ -53,7 +53,7 @@ class MinesweeperUI:
                 )
                 btn.bind("<Button-3>", lambda event, x=x, y=y: self.on_right_click(x, y))
 
-                # AUCUNE marge interne
+                # Marge
                 btn.grid(row=y, column=x, padx=0, pady=0, ipadx=0, ipady=0)
 
                 self.buttons[(x, y)] = btn
@@ -87,13 +87,21 @@ class MinesweeperUI:
         btn = self.buttons[(x, y)]
         status = tile.get_status()
 
+        # États simples
         if status in ["Hidden", "Flag", "Mystery", "Kaboom"]:
             btn.config(image=self.images[status])
             return
 
+        # Case visible → afficher un chiffre
         if status == "Visible":
             nb = tile.get_nbmines()
-            btn.config(image=self.num_images[nb])
+
+            # Case vide
+            if nb == 0:
+                btn.config(image=self.images["Visible"])  # tuile vide
+            else:
+                # Décalage de 1 car num_0.png correspond visuellement à "1"
+                btn.config(image=self.num_images[nb - 1])
 
     # Mise à jour de toute la grille
     def update_all_buttons(self):
@@ -114,7 +122,7 @@ class MinesweeperUI:
         popup.geometry("200x120")
         popup.resizable(False, False)
 
-        tk.Label(popup, text="💥 Game Over !", font=("Arial", 14)).pack(pady=10)
+        tk.Label(popup, text=" Game Over !", font=("Arial", 14)).pack(pady=10)
 
         tk.Button(
             popup,
