@@ -10,7 +10,12 @@ class MinesweeperUI:
         self.buttons = {}
         self.first_click = True
 
-      
+        # Empêche la fenêtre de s'étirer
+        self.root.resizable(False, False)
+
+        # Empêche Tkinter d'ajouter des marges autour du contenu
+        self.root.grid_propagate(False)
+        self.root.pack_propagate(False)
 
         # Images principales
         self.images = {
@@ -66,9 +71,15 @@ class MinesweeperUI:
         result = tile.discover_tile(self.grid)
         self.update_all_buttons()
 
+        # Défaite
         if result == "Lose":
             self.reveal_all()
             self.game_over_popup()
+            return
+
+        # Victoire
+        if self.check_victory():
+            self.victory_popup()
 
     # Clic droit
     def on_right_click(self, x, y):
@@ -82,18 +93,16 @@ class MinesweeperUI:
         btn = self.buttons[(x, y)]
         status = tile.get_status()
 
-        # États simples
         if status in ["Hidden", "Flag", "Mystery", "Kaboom"]:
             btn.config(image=self.images[status])
             return
 
-        # Case visible → afficher un chiffre
         if status == "Visible":
             nb = tile.get_nbmines()
 
             # Case vide
             if nb == 0:
-                btn.config(image=self.images["Visible"])  # tuile vide
+                btn.config(image=self.images["Visible"])
             else:
                 # Décalage de 1 car num_0.png correspond visuellement à "1"
                 btn.config(image=self.num_images[nb - 1])
@@ -117,7 +126,7 @@ class MinesweeperUI:
         popup.geometry("200x120")
         popup.resizable(False, False)
 
-        tk.Label(popup, text=" Game Over !", font=("Arial", 14)).pack(pady=10)
+        tk.Label(popup, text="💥 Game Over !", font=("Arial", 14)).pack(pady=10)
 
         tk.Button(
             popup,
@@ -132,6 +141,37 @@ class MinesweeperUI:
             font=("Arial", 12),
             command=self.root.destroy
         ).pack(pady=5)
+
+    # Popup Victoire
+    def victory_popup(self):
+        popup = tk.Toplevel(self.root)
+        popup.title("Victoire !")
+        popup.geometry("200x120")
+        popup.resizable(False, False)
+
+        tk.Label(popup, text="🎉 Victoire !", font=("Arial", 14)).pack(pady=10)
+
+        tk.Button(
+            popup,
+            text="Rejouer",
+            font=("Arial", 12),
+            command=lambda: (popup.destroy(), self.restart_game())
+        ).pack(pady=5)
+
+        tk.Button(
+            popup,
+            text="Quitter",
+            font=("Arial", 12),
+            command=self.root.destroy
+        ).pack(pady=5)
+
+    # Vérifie si toutes les cases non-minées sont révélées
+    def check_victory(self):
+        for row in self.grid:
+            for tile in row:
+                if not tile.get_ismine() and tile.get_status() != "Visible":
+                    return False
+        return True
 
     # Redémarrer une partie
     def restart_game(self):
