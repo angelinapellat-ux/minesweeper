@@ -1,22 +1,22 @@
 DIFFICULTY_CONFIG = {
     "EASY": {
         "MAX_MINES" : 12,
-        "MAX_TILES" : 5*5,
+        "MAX_TILES" : 10*10,
         "MAX_TIMER" : 120
     },
     "NORMAL": {
-        "MAX_MINES" : 30,
-        "MAX_TILES" : 7*7,
+        "MAX_MINES" : 60,
+        "MAX_TILES" : 20*20,
         "MAX_TIMER" : 240
     },
     "HARD": {
-        "MAX_MINES" : 45,
-        "MAX_TILES" : 9*9,
+        "MAX_MINES" : 250,
+        "MAX_TILES" : 30*30,
         "MAX_TIMER" : 360
     },
     "IMPOSSIBLE": {
-        "MAX_MINES" : 7,
-        "MAX_TILES" : 3*3,
-        "MAX_TIMER" : 20
+        "MAX_MINES" : 1000,
+        "MAX_TILES" : 50*50,
+        "MAX_TIMER" : 40
     }
 }
